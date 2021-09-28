@@ -1,7 +1,7 @@
 class <emptyTree><<C <root>>> < (::<todo sym>)
   def pos<<todo method>>(x, y, z, &<blk>)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, <blk>, x, y, z)
+      ::<Magic>.<call-with-block>(<self>, :super, <blk>, x, y, z)
       <self>.super(x, y, z) do ||
         <self>.puts("hi")
       end
@@ -46,7 +46,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_blk<<todo method>>(x, y, z, &blk)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, blk, x, y, z)
+      ::<Magic>.<call-with-block>(<self>, :super, blk, x, y, z)
       <self>.super(x, y, z) do ||
         <self>.puts("hi")
       end
@@ -91,7 +91,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kw<<todo method>>(x, y, z, j:, k:, &<blk>)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, <blk>, x, y, z, :j, j, :k, k)
+      ::<Magic>.<call-with-block>(<self>, :super, <blk>, x, y, z, :j, j, :k, k)
       <self>.super(x, y, z, :j, j, :k, k) do ||
         <self>.puts("hi")
       end
@@ -136,7 +136,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kwsplat<<todo method>>(x, y, z, *bar:, &<blk>)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, <blk>, x, y, z, ::<Magic>.<to-hash-dup>(bar))
+      ::<Magic>.<call-with-block>(<self>, :super, <blk>, x, y, z, ::<Magic>.<to-hash-dup>(bar))
       <self>.super(x, y, z, ::<Magic>.<to-hash-dup>(bar)) do ||
         <self>.puts("hi")
       end
@@ -181,7 +181,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kw_kwsplat<<todo method>>(x, y, z, j:, k:, *bar:, &<blk>)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, <blk>, x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar)))
+      ::<Magic>.<call-with-block>(<self>, :super, <blk>, x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar)))
       <self>.super(x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar))) do ||
         <self>.puts("hi")
       end
@@ -226,7 +226,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kw_blk<<todo method>>(x, y, z, j:, k:, &blk)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, blk, x, y, z, :j, j, :k, k)
+      ::<Magic>.<call-with-block>(<self>, :super, blk, x, y, z, :j, j, :k, k)
       <self>.super(x, y, z, :j, j, :k, k) do ||
         <self>.puts("hi")
       end
@@ -271,7 +271,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kwsplat_blk<<todo method>>(x, y, z, *bar:, &blk)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, blk, x, y, z, ::<Magic>.<to-hash-dup>(bar))
+      ::<Magic>.<call-with-block>(<self>, :super, blk, x, y, z, ::<Magic>.<to-hash-dup>(bar))
       <self>.super(x, y, z, ::<Magic>.<to-hash-dup>(bar)) do ||
         <self>.puts("hi")
       end
@@ -316,7 +316,7 @@ class <emptyTree><<C <root>>> < (::<todo sym>)
 
   def pos_kw_kwsplat_blk<<todo method>>(x, y, z, j:, k:, *bar:, &blk)
     begin
-      ::<Magic>.<call-with-block>(::T.unsafe(<self>), :super, blk, x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar)))
+      ::<Magic>.<call-with-block>(<self>, :super, blk, x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar)))
       <self>.super(x, y, z, {:j => j, :k => k}.merge(::<Magic>.<to-hash-dup>(bar))) do ||
         <self>.puts("hi")
       end
