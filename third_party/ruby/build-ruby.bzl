@@ -64,6 +64,10 @@ cp -aL "{src_dir}"/* "$build_dir"
 
 {install_extra_srcs}
 {install_append_srcs}
+pwd
+ls -R
+exit 1
+{install_bundler_patch}
 
 pushd "$build_dir" > /dev/null
 
@@ -159,6 +163,8 @@ cp "$out_dir/bin/bundle" "$out_dir/bin/bundler"
 
 {install_gems}
 
+cat build.log
+
 popd > /dev/null
 
 rm -rf "$build_dir"
@@ -174,6 +180,10 @@ cp "{file}" "$build_dir/{dirname}/{basename}"
 
 _INSTALL_APPEND_SRC = """
 cat "{file}" >> "$build_dir/{target}"
+"""
+
+_INSTALL_BUNDLER_PATCH = """
+cat "{file}" >> "$build_dir/bundler.patch"
 """
 
 _INSTALL_GEM = """
@@ -271,6 +281,11 @@ def _build_ruby_impl(ctx):
 
     install_gems = [_INSTALL_GEM.format(file = file.path) for file in ctx.files.gems]
 
+    bundler_patches = []
+    for bundler_patch_src in ctx.attr.bundler_patch:
+          for file in bundler_patch_src.files.to_list():
+              bundler_patches.append(_INSTALL_BUNDLER_PATCH.format(dirname = bundler_patch_src.label.package, file = file.path))
+
     # Build
     ctx.actions.run_shell(
         mnemonic = "BuildRuby",
@@ -296,6 +311,7 @@ def _build_ruby_impl(ctx):
             extra_srcs_object_files = " ".join(extra_srcs_object_files),
             install_append_srcs = "\n".join(install_append_srcs),
             install_gems = "\n".join(install_gems),
+            install_bundler_patch = "\n".join(bundler_patches),
         )),
     )
 
@@ -333,6 +349,10 @@ _build_ruby = rule(
         ),
         "append_srcs": attr.label_list(
             doc = "A list of *.c files to append to the file of the same name in the ruby vm",
+        ),
+        "bundler_patch": attr.label_list(
+            doc = "The patch to apply with patch -p3 to bundler",
+            allow_files = True,
         ),
         "configure_flags": attr.string_list(
             doc = "Additional arguments to configure",
@@ -589,7 +609,7 @@ _rubyfmt_static_deps = rule(
     implementation = _rubyfmt_static_deps_impl,
 )
 
-def ruby(rubygems, gems, extra_srcs = None, append_srcs = None, configure_flags = [], copts = [], cppopts = [], linkopts = [], deps = []):
+def ruby(rubygems, gems, extra_srcs = None, append_srcs = None, bundler_patch = None, configure_flags = [], copts = [], cppopts = [], linkopts = [], deps = []):
     """
     Define a ruby build.
     """
@@ -605,6 +625,7 @@ def ruby(rubygems, gems, extra_srcs = None, append_srcs = None, configure_flags 
         src = ":source",
         extra_srcs = extra_srcs,
         append_srcs = append_srcs,
+        bundler_patch = bundler_patch,
         rubygems = rubygems,
         configure_flags = configure_flags,
         copts = copts,

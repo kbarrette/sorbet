@@ -7,6 +7,9 @@ ruby(
         "@com_stripe_ruby_typer//compiler/ruby-static-exports:vm_append_files",
         "@com_stripe_ruby_typer//compiler/IREmitter/Payload/patches:vm_append_files",
     ],
+    bundler_patch = [
+        "@com_stripe_ruby_typer//third_party/ruby:sorbet_ruby_bundler.patch",
+    ],
     configure_flags = [
         "--enable-shared",
         "--sysconfdir=/etc",
